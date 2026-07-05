@@ -20,6 +20,6 @@ The process of transferring data to the GCP Linux instance involved addressing v
 
 ---
 
-## 🏃 Running on a Cloud Virtual Machine (VM)
+## 🚀 Running on a Cloud Virtual Machine (VM)
 
 Once the environment was fully optimized, the application was launched with full `root` privileges:
