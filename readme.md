@@ -1,25 +1,25 @@
-# i2i Academy - Spring Boot GCP Dağıtım Projesi
+# i2i Academy - Spring Boot GCP Deployment Project
 
-Bu depo, Google Cloud Platform (GCP) Compute Engine sanal makine örneğine başarıyla dağıtılmış bir Java Spring Boot uygulamasını içermektedir.
+This repository contains a Java Spring Boot application successfully deployed to a Google Cloud Platform (GCP) Compute Engine virtual machine instance.
 
-## 🚀 Proje Özellikleri ve Uç Nokta (Endpoint)
+## 🚀 Project Features and Endpoint
 - **Framework:** Spring Boot v4.1.0
-- **Java Sürümü:** OpenJDK 17
-- **Ana Uç Nokta:** `http://<GCP-VM-PUBLIC-IP>:8080/spring-boot`
-- **Yanıt:** `Welcome to i2i Academy! Mustafa Oskay! Spirng Boot`
+- **Java Version:** OpenJDK 17
+- **Main Endpoint:** `http://<GCP-VM-PUBLIC-IP>:8080/spring-boot`
+- **Response:** `Welcome to i2i Academy! Mustafa Oskay! Spring Boot`
 
 ---
 
-## 🛠️ Altyapı ve Dağıtım Süreci
+## 🛠️ Infrastructure and Deployment Process
 
-GCP Linux örneği üzerindeki dağıtım sürecinde, çeşitli teknik altyapı zorlukları ele alınmış ve canlı ortam standartlarına uygun çözümlerle giderilmiştir:
+The process of transferring data to the GCP Linux instance involved addressing various infrastructure constraints and implementing solutions suitable for a production environment deployment:
 
-1. **Yetki Yükseltme (Sudo Kısıtlaması):** Varsayılan kullanıcı hesabı yönetici erişimine sahip değildi. Bu durum, güvenli `root` çalıştırma hakları sağlamak amacıyla GCP Konsolu üzerinden kalıcı bir Başlangıç ​​Betiği (Startup Script) eklenerek çözüldü.
-2. **Ağ/İnternet İzolasyonu:** Bulut örneğinin harici indirme sitelerine erişimi kısıtlanmıştı (`wget` engelleri). Bu engeli aşmak için, çalıştırılabilir JAR dosyası güvenli bir şekilde bir **Google Cloud Storage (GCS) Bucket**'ına yüklendi ve `gcloud storage cp` komutuyla dahili altyapı kanalları kullanılarak örneğe başarıyla çekildi.
-3. **Port Çakışması Yönetimi:** 8080 numaralı port, başlangıçta aktif ve eski bir arka plan süreci tarafından engellenmişti. Süreç filtreleme araçları (`ps -ef | grep java`) kullanılarak ilgili PID (`7232`) dinamik olarak tespit edildi ve `kill -9` komutuyla güvenli bir şekilde sonlandırılarak, ağ portu gömülü Tomcat sunucusu için tamamen serbest bırakıldı.
+1. **Privilege Escalation (Sudo Restriction):** The default user account lacked administrative access. This was resolved by adding a persistent **Startup Script** via the GCP Console to ensure secure `root` execution privileges.
+2. **Network/Internet Isolation:** The cloud instance had restricted access to external download sites (blocking `wget` commands). To overcome this, the executable JAR file was securely uploaded to a **Google Cloud Storage (GCS) Bucket** and successfully retrieved by the instance using internal infrastructure connections via the `gcloud storage cp` command.
+3. **Port Conflict Management:** Port 8080 was initially blocked by an active, legacy background process. The relevant PID (`7232`) was dynamically identified using process monitoring tools (`ps -ef | grep java`) and safely terminated via `kill -9`, thereby fully releasing the network port held by the Tomcat server.
 
 ---
 
-## 🏃 Bulut Sanal Makinesinde (VM) Çalıştırma
+## 🏃 Running on a Cloud Virtual Machine (VM)
 
-Ortam tamamen optimize edildikten sonra, uygulama tam `root` yetkileri kullanılarak başlatıldı:
+Once the environment was fully optimized, the application was launched with full `root` privileges:
